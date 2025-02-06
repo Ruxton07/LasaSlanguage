@@ -3,10 +3,11 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-#include <iostream>
-#include <string>
+// Token types
+// EOF (end-of-file) token is used to indicate that
+// there is no more input left for lexical analysis
 
-enum class TokenType
+typedef enum TokenType
 {
     INTEGER,
     PLUS,
@@ -16,18 +17,21 @@ enum class TokenType
     LPAREN,
     RPAREN,
     END_OF_FILE
-};
+} TokenType;
 
-std::string tokenTypeToString(TokenType type);
+char* tokenTypeToString(TokenType* type);
 
-class Token
+typedef struct Token
 {
-public:
     TokenType type;
     int value;
 
-    Token(TokenType type, int value);
-    friend std::ostream &operator<<(std::ostream &out, const Token &token);
-};
+} token;
+
+void printToken(token* tk);
+void setTokenVal(token* tk, int val);
+
+token initToken();
+token initToken(TokenType* type, int value);
 
 #endif // TOKEN_H

@@ -5,24 +5,24 @@
 
 #include <token.h>
 
-class Interpreter
+typedef struct lexer
 {
-public:
-    Interpreter();
-    Token getNextToken();
-    int expr();
-
-private:
-    std::string text;
-    size_t pos;
-    Token currentToken;
+    char* text;
+    unsigned int pos;
+    token currentToken;
     char currentChar;
+} lexer;
 
-    void advance();
-    void skipWhitespace();
-    int integer();
-    Token getNextTokenInternal();
-    void error();
-};
+void amalgamate();
+int expr();
+void advance();
+void skipWhitespace();
+int integer();
+void error(lexer* lex);
+token getNextToken(lexer* lex);
+token getNextTokenInternal(lexer* lex);
+
+lexer initLexer();
+lexer initLexer(char* text);
 
 #endif // INTERPRETER_H
