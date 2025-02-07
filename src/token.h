@@ -3,10 +3,6 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-// Token types
-// EOF (end-of-file) token is used to indicate that
-// there is no more input left for lexical analysis
-
 typedef enum TokenType
 {
     INTEGER,
@@ -21,17 +17,16 @@ typedef enum TokenType
 
 char* tokenTypeToString(TokenType* type);
 
-typedef struct Token
+typedef struct token
 {
     TokenType type;
     int value;
 
-} token;
+} Token;
 
-void printToken(token* tk);
-void setTokenVal(token* tk, int val);
+Token initToken();
+Token initToken(TokenType* type, int value);
 
-token initToken();
-token initToken(TokenType* type, int value);
+void printToken(Token* token);
 
 #endif // TOKEN_H
