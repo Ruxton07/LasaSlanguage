@@ -1,6 +1,7 @@
 // token.c
 
 #include "token.h"
+#include <stdio.h>
 
 // Token types
 // EOF (end-of-file) token is used to indicate that
@@ -16,7 +17,7 @@ typedef enum TokenType
     LPAREN,
     RPAREN,
     END_OF_FILE // Forced to use this name because EOF is a macro in C which is set to (-1) through #define
-};
+} TokenType;
 
 const char* tokenTypeToString(enum TokenType type)
 {
@@ -43,15 +44,29 @@ const char* tokenTypeToString(enum TokenType type)
     }
 }
 
-// Token struct
-
-struct Token
+typedef struct token
 {
     enum TokenType type;
     int value;
-};
+} Token;
 
-void printToken(struct Token token)
+Token initToken()
 {
-    printf("Token@%p: Type: %d, Value: %d\n", (void*)&token, token.type, token.value);
+    Token token;
+    token.type = END_OF_FILE;
+    token.value = -1;
+    return token;
+}
+
+Token initToken(enum TokenType type, int value)
+{
+    Token token;
+    token.type = type;
+    token.value = value;
+    return token;
+}
+
+void printToken(Token* token)
+{
+    printf("Token@%p: Type: %s, Value: %d\n", (void*)token, tokenTypeToString(token->type), token->value);
 }
