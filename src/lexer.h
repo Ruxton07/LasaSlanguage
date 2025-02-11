@@ -1,7 +1,7 @@
 // interpreter.h
 
-#ifndef INTERPRETER_H
-#define INTERPRETER_H
+#ifndef LEXER_H
+#define LEXER_H
 
 #include <token.h>
 #include <stddef.h>
@@ -28,4 +28,4 @@ bool isInteger(char* s);
 void error(lexer* lex);
 void error(lexer* lex, char* msg);
 
-#endif // INTERPRETER_H
+#endif // LEXER_H
