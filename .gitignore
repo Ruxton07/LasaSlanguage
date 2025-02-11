@@ -60,3 +60,6 @@ dkms.conf
 
 # Miscellaneous
 **/lsl-support
+
+# Project dependencies (use bundle init on Gemfile to install these)
+**/build/vendor
