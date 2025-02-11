@@ -1,6 +1,7 @@
 // lexer.c
-
 #include "lexer.h"
+#ifdef LEXER_H
+
 #include "token.c"
 #include <stdbool.h>
 
@@ -157,3 +158,4 @@ void error(lexer* lex, char* msg) {
     printf("Error parsing input: %s\n", msg);
     exit(1);
 }
+#endif // LEXER_H

@@ -1,6 +1,7 @@
 // token.c
-
 #include "token.h"
+#ifdef TOKEN_H
+
 #include <stdio.h>
 
 // Token types
@@ -70,3 +71,4 @@ void printToken(Token* token)
 {
     printf("Token@%p: Type: %s, Value: %d\n", (void*)token, tokenTypeToString(token->type), token->value);
 }
+#endif // TOKEN_H
