@@ -23,9 +23,9 @@ void eat(lexer* lex, enum TokenType type);
 void* expr(lexer* lex);
 void advance(lexer* lex);
 void skipWhitespace(lexer* lex);
-bool isInteger(char c);
-bool isInteger(char* s);
-void error(lexer* lex);
-void error(lexer* lex, char* msg);
+bool isIntegerFromChar(s);
+bool isIntegerFromString(s);
+void errorWithoutMsg(lexer* lex);
+void errorWithMsg(lexer* lex, char* msg);
 
 #endif // LEXER_H

@@ -5,6 +5,10 @@
 #include "token.c"
 #include <stdbool.h>
 
+#define isInteger(s) _Generic((s), char: isIntegerFromChar(s), char*: isIntegerFromString(s))
+#define error(lex, msg) errorWithMsg(lex, msg)
+#define error(lex) errorWithoutMsg(lex)
+
 typedef struct lexer
 {
     char* text;
@@ -136,11 +140,11 @@ void skipWhitespace(lexer* lex) {
     }
 }
 
-bool isInteger(char c) {
+bool isIntegerFromChar(char c) {
     return c >= '0' && c <= '9';
 }
 
-bool isInteger(char* s) {
+bool isIntegerFromString(char* s) {
     for (int i = 0; i < strlen(s); i++) {
         if (!isInteger(s[i])) {
             return false;
@@ -149,12 +153,12 @@ bool isInteger(char* s) {
     return true;
 }
 
-void error(lexer* lex) {
+void errorWithoutMsg(lexer* lex) {
     printf("Error parsing input:\nUnknown error");
     exit(1);
 }
 
-void error(lexer* lex, char* msg) {
+void errorWithMsg(lexer* lex, char* msg) {
     printf("Error parsing input: %s\n", msg);
     exit(1);
 }
