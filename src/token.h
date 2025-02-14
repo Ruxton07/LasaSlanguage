@@ -10,6 +10,10 @@ typedef enum tokentype
     MINUS,
     MUL,
     DIV,
+    EXP,
+    MOD,
+    INC,
+    DEC,
     LPAREN,
     RPAREN,
     END_OF_FILE

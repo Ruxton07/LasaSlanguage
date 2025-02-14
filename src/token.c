@@ -18,6 +18,14 @@ const char* tokenTypeToString(TokenType type)
         return "MUL";
     case DIV:
         return "DIV";
+    case EXP:
+        return "EXP";
+    case MOD:
+        return "MOD";
+    case INC:
+        return "INC";
+    case DEC:
+        return "DEC";
     case LPAREN:
         return "LPAREN";
     case RPAREN:
