@@ -22,6 +22,7 @@
   :build_root: build
   :test_file_prefix: test_
   :default_tasks:
+    - clobber
     - test:all
 
   # performance options. If your tools start giving mysterious errors, consider
