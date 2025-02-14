@@ -6,6 +6,7 @@
 typedef enum tokentype
 {
     INTEGER,
+    DOUBLE,
     PLUS,
     MINUS,
     MUL,
@@ -22,6 +23,12 @@ typedef enum tokentype
 } TokenType;
 
 const char* tokenTypeToString(TokenType type);
+
+typedef union tokenvalue {
+    int intValue;
+    double doubleValue;
+    char charValue;
+} TokenValue;
 
 typedef struct token
 {
