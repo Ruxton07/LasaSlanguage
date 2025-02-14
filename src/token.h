@@ -12,8 +12,10 @@ typedef enum tokentype
     DIV,
     EXP,
     MOD,
-    INC,
-    DEC,
+    POSTINC,
+    POSTDEC,
+    PREINC,
+    PREDEC,
     LPAREN,
     RPAREN,
     END_OF_FILE
