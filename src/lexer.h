@@ -23,6 +23,7 @@ void* expr(lexer* lex);
 void advance(lexer* lex);
 void skipWhitespace(lexer* lex);
 int integer(lexer* lex);
+void* performOp(lexer* lex, Token left, Token op, Token right);
 void errorWOMsg(lexer* lex);
 void errorWMsg(lexer* lex, char* msg);
 
