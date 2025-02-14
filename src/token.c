@@ -45,11 +45,11 @@ Token initBlankToken()
 {
     Token token;
     token.type = END_OF_FILE;
-    token.value = -1;
+    token.value = (TokenValue){-1};
     return token;
 }
 
-Token initToken(TokenType type, int value)
+Token initToken(TokenType type, TokenValue value)
 {
     Token token;
     token.type = type;
@@ -59,6 +59,7 @@ Token initToken(TokenType type, int value)
 
 void printToken(Token* token)
 {
-    printf("Token@%p: Type: %s, Value: %d\n", (void*)token, tokenTypeToString(token->type), token->value);
+    printf("Token@%p: Type: %s,\nValues:\n%d\n%d\n%c", (void*)token, tokenTypeToString(token->type),
+            token->value.intValue, token->value.doubleValue, token->value.charValue);
 }
 #endif // TOKEN_H

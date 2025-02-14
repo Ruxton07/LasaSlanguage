@@ -33,12 +33,12 @@ typedef union tokenvalue {
 typedef struct token
 {
     TokenType type;
-    int value;
+    TokenValue value;
 
 } Token;
 
 Token initBlankToken();
-Token initToken(TokenType type, int value);
+Token initToken(TokenType type, TokenValue value);
 
 void printToken(Token* token);
 
