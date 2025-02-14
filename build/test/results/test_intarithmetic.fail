@@ -1,0 +1,47 @@
+---
+:source:
+  :file: test/test_intarithmetic.c
+  :dirname: test
+  :basename: test_intarithmetic.c
+:successes: []
+:failures:
+- :test: test_addition
+  :line: 16
+  :message: Test case crashed
+  :unity_test_time: 0
+- :test: test_subtraction
+  :line: 21
+  :message: Test case crashed
+  :unity_test_time: 0
+- :test: test_multiplication
+  :line: 26
+  :message: Test case crashed
+  :unity_test_time: 0
+- :test: test_division
+  :line: 31
+  :message: Test case crashed
+  :unity_test_time: 0
+- :test: test_modulus
+  :line: 37
+  :message: Test case crashed
+  :unity_test_time: 0
+- :test: test_increment
+  :line: 42
+  :message: Test case crashed
+  :unity_test_time: 0
+- :test: test_decrement
+  :line: 47
+  :message: Test case crashed
+  :unity_test_time: 0
+- :test: test_exponentiation
+  :line: 52
+  :message: Test case crashed
+  :unity_test_time: 0
+:ignores: []
+:counts:
+  :total: 8
+  :passed: 0
+  :failed: 8
+  :ignored: 0
+:stdout: []
+:time: 0.06966570019721985
