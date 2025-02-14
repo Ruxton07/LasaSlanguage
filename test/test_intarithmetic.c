@@ -13,6 +13,27 @@ void tearDown(void)
 {
 }
 
+void test_addition(void) {
+    lexer* lex = initLexer("1 + 2");
+    Token* result = expr(lex);
+    TEST_ASSERT_EQUAL(3, result->value);
+}
+void test_subtraction(void) {
+    lexer* lex = initLexer("1 - 2");
+    Token* result = expr(lex);
+    TEST_ASSERT_EQUAL(-1, result->value);
+}
+void test_multiplication(void) {
+    lexer* lex = initLexer("2 * 3");
+    Token* result = expr(lex);
+    TEST_ASSERT_EQUAL(6, result->value);
+}
+void test_division(void) {
+    lexer* lex = initLexer("6 / 3");
+    Token* result = expr(lex);
+    TEST_ASSERT_EQUAL(2, result->value);
+}
+
 void test_modulus(void)
 {
     TEST_IGNORE_MESSAGE("Need to Implement integer modulus");
