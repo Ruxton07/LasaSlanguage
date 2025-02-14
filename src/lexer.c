@@ -4,22 +4,13 @@
 
 #include "token.c"
 #include <stdbool.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define isInteger(s) _Generic((s), char: isIntegerFromChar(s), char*: isIntegerFromString(s))
-#define error(lex, msg) errorWithMsg(lex, msg)
-#define error(lex) errorWithoutMsg(lex)
-
-typedef struct lexer
+lexer* initBlankLexer()
 {
-    char* text;
-    int pos;
-    Token currentToken;
-    char currentChar;
-} lexer;
-
-lexer* initLexer()
-{
-    lexer* lex = malloc(sizeof(struct lexer));
+    lexer* lex = malloc(sizeof(lexer));
     lex->text = "";
     lex->pos = 0;
     lex->currentChar = lex->text[lex->pos];
@@ -27,7 +18,7 @@ lexer* initLexer()
 
 lexer* initLexer(char* text)
 {
-    lexer* lex = malloc(sizeof(struct lexer));
+    lexer* lex = malloc(sizeof(lexer));
     lex->text = text;
     lex->pos = 0;
     lex->currentChar = text[lex->pos];
@@ -74,26 +65,29 @@ Token getNextToken(lexer* lex) {
             return initToken(RPAREN, 0);
         }
 
-        error(lex);
+        errorWOMsg(lex);
     }
 }
 
-void eat(lexer* lex, enum TokenType type) {
+void eat(lexer* lex, TokenType type) {
     if (lex->currentToken.type == type) {
         lex->currentToken = getNextToken(lex);
     } else {
-        error(lex);
+        errorWOMsg(lex);
     }
 }
 void* expr(lexer* lex) {
+    printf("1");
     // expr --> INTEGER <INTEGER-CO> INTEGER
     lex->currentToken = getNextToken(lex);
-
+    printf("2");
     Token* left = &(lex->currentToken);
+    printf("3");
     eat(lex, INTEGER);
-
+    printf("4");
     // check if the current token is an <INTEGER-CO> token
     Token* op = &(lex->currentToken);
+    printf("5");
     if (op->type == PLUS) {
         eat(lex, PLUS);
     } else if (op->type == MINUS) {
@@ -103,7 +97,7 @@ void* expr(lexer* lex) {
     } else if (op->type == DIV) {
         eat(lex, DIV);
     } else {
-        error(lex);
+        errorWOMsg(lex);
     }
 
     Token* right = &(lex->currentToken);
@@ -140,25 +134,24 @@ void skipWhitespace(lexer* lex) {
     }
 }
 
-bool isIntegerFromChar(char c) {
-    return c >= '0' && c <= '9';
-}
-
-bool isIntegerFromString(char* s) {
-    for (int i = 0; i < strlen(s); i++) {
-        if (!isInteger(s[i])) {
-            return false;
-        }
+int integer(lexer* lex) {
+    char result[100];
+    int i = 0;
+    while (lex->currentChar != '\0' && isdigit(lex->currentChar)) {
+        result[i] = lex->currentChar;
+        advance(lex);
+        i++;
     }
-    return true;
+    result[i] = '\0';
+    return atoi(result);
 }
 
-void errorWithoutMsg(lexer* lex) {
+void errorWOMsg(lexer* lex) {
     printf("Error parsing input:\nUnknown error");
     exit(1);
 }
 
-void errorWithMsg(lexer* lex, char* msg) {
+void errorWMsg(lexer* lex, char* msg) {
     printf("Error parsing input: %s\n", msg);
     exit(1);
 }

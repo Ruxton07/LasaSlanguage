@@ -3,7 +3,7 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-typedef enum TokenType
+typedef enum tokentype
 {
     INTEGER,
     PLUS,
@@ -15,7 +15,7 @@ typedef enum TokenType
     END_OF_FILE
 } TokenType;
 
-char* tokenTypeToString(TokenType* type);
+const char* tokenTypeToString(TokenType type);
 
 typedef struct token
 {
@@ -24,8 +24,8 @@ typedef struct token
 
 } Token;
 
-Token initToken();
-Token initToken(TokenType* type, int value);
+Token initBlankToken();
+Token initToken(TokenType type, int value);
 
 void printToken(Token* token);
 

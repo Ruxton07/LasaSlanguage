@@ -4,23 +4,7 @@
 
 #include <stdio.h>
 
-// Token types
-// EOF (end-of-file) token is used to indicate that
-// there is no more input left for lexical analysis
-
-typedef enum TokenType
-{
-    INTEGER,
-    PLUS,
-    MINUS,
-    MUL,
-    DIV,
-    LPAREN,
-    RPAREN,
-    END_OF_FILE // Forced to use this name because EOF is a macro in C which is set to (-1) through #define
-} TokenType;
-
-const char* tokenTypeToString(enum TokenType type)
+const char* tokenTypeToString(TokenType type)
 {
     switch (type)
     {
@@ -45,13 +29,7 @@ const char* tokenTypeToString(enum TokenType type)
     }
 }
 
-typedef struct token
-{
-    enum TokenType type;
-    int value;
-} Token;
-
-Token initToken()
+Token initBlankToken()
 {
     Token token;
     token.type = END_OF_FILE;
@@ -59,7 +37,7 @@ Token initToken()
     return token;
 }
 
-Token initToken(enum TokenType type, int value)
+Token initToken(TokenType type, int value)
 {
     Token token;
     token.type = type;
