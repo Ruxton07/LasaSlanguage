@@ -22,10 +22,14 @@ const char* tokenTypeToString(TokenType type)
         return "EXP";
     case MOD:
         return "MOD";
-    case INC:
+    case POSTINC:
         return "INC";
-    case DEC:
+    case POSTDEC:
         return "DEC";
+    case PREINC:
+        return "PREINC";
+    case PREDEC:
+        return "PREDEC";
     case LPAREN:
         return "LPAREN";
     case RPAREN:
