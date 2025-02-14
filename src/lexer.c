@@ -14,6 +14,8 @@ lexer* initBlankLexer()
     lex->text = "";
     lex->pos = 0;
     lex->currentChar = lex->text[lex->pos];
+    lex->currentToken = initBlankToken();
+    return lex;
 }
 
 lexer* initLexer(char* text)
@@ -22,51 +24,62 @@ lexer* initLexer(char* text)
     lex->text = text;
     lex->pos = 0;
     lex->currentChar = text[lex->pos];
+    lex->currentToken = initBlankToken();
+    return lex;
 }
 
 Token getNextToken(lexer* lex) {
     while (lex->currentChar != '\0') {
-        if (lex->currentChar == ' ') {
+        if (isspace(lex->currentChar)) {
             skipWhitespace(lex);
             continue;
         }
 
         if (isdigit(lex->currentChar)) {
-            return initToken(INTEGER, integer(lex));
+            lex->currentToken = initToken(INTEGER, integer(lex));
+            return lex->currentToken;
         }
 
         if (lex->currentChar == '+') {
             advance(lex);
-            return initToken(PLUS, 0);
+            lex->currentToken = initToken(PLUS, 0);
+            return lex->currentToken;
         }
 
         if (lex->currentChar == '-') {
             advance(lex);
-            return initToken(MINUS, 0);
+            lex->currentToken = initToken(MINUS, 0);
+            return lex->currentToken;
         }
 
         if (lex->currentChar == '*') {
             advance(lex);
-            return initToken(MUL, 0);
+            lex->currentToken = initToken(MUL, 0);
+            return lex->currentToken;
         }
 
         if (lex->currentChar == '/') {
             advance(lex);
-            return initToken(DIV, 0);
+            lex->currentToken = initToken(DIV, 0);
+            return lex->currentToken;
         }
 
         if (lex->currentChar == '(') {
             advance(lex);
-            return initToken(LPAREN, 0);
+            lex->currentToken = initToken(LPAREN, 0);
+            return lex->currentToken;
         }
 
         if (lex->currentChar == ')') {
             advance(lex);
-            return initToken(RPAREN, 0);
+            lex->currentToken = initToken(RPAREN, 0);
+            return lex->currentToken;
         }
 
         errorWOMsg(lex);
     }
+    lex->currentToken = initToken(END_OF_FILE, 0);
+    return lex->currentToken;
 }
 
 void eat(lexer* lex, TokenType type) {
@@ -77,46 +90,45 @@ void eat(lexer* lex, TokenType type) {
     }
 }
 void* expr(lexer* lex) {
-    printf("1");
     // expr --> INTEGER <INTEGER-CO> INTEGER
     lex->currentToken = getNextToken(lex);
-    printf("2");
-    Token* left = &(lex->currentToken);
-    printf("3");
+    Token left = lex->currentToken;
     eat(lex, INTEGER);
-    printf("4");
     // check if the current token is an <INTEGER-CO> token
-    Token* op = &(lex->currentToken);
-    printf("5");
-    if (op->type == PLUS) {
+    Token op = lex->currentToken;
+    if (op.type == PLUS) {
         eat(lex, PLUS);
-    } else if (op->type == MINUS) {
+    } else if (op.type == MINUS) {
         eat(lex, MINUS);
-    } else if (op->type == MUL) {
+    } else if (op.type == MUL) {
         eat(lex, MUL);
-    } else if (op->type == DIV) {
+    } else if (op.type == DIV) {
         eat(lex, DIV);
     } else {
         errorWOMsg(lex);
     }
-
-    Token* right = &(lex->currentToken);
+    Token right = lex->currentToken;
     eat(lex, INTEGER);
 
     // at this point INTEGER <INTEGER-CO> INTEGER sequence of tokens has been
     // successfully found and the method can just return the result of
     // performing such operation on two integers
+    
     int result;
-    if (op->type == PLUS) {
-        result = left->value + right->value;
-    } else if (op->type == MINUS) {
-        result = left->value - right->value;
-    } else if (op->type == MUL) {
-        result = left->value * right->value;
-    } else if (op->type == DIV) {
-        result = (int) (left->value / right->value);
+    if (op.type == PLUS) {
+        result = left.value + right.value;
+    } else if (op.type == MINUS) {
+        result = left.value - right.value;
+    } else if (op.type == MUL) {
+        result = left.value * right.value;
+    } else if (op.type == DIV) {
+        result = (int) (left.value / right.value);
+    } else {
+        errorWMsg(lex, ("Unknown operator: %d", tokenTypeToString(op.type)));
     }
-    return result;
+    Token* resultToken = malloc(sizeof(Token));
+    *resultToken = initToken(INTEGER, result);
+    return resultToken;
 }
 
 void advance(lexer* lex) {
