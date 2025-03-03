@@ -13,40 +13,51 @@ void tearDown(void)
 void test_addition(void) {
     lexer* lex = initLexer("1 + 2");
     Token* result = expr(lex);
-    TEST_ASSERT_EQUAL(3, result->value);
+    TEST_ASSERT_EQUAL(3, result->value.intValue);
 }
 void test_subtraction(void) {
     lexer* lex = initLexer("1 - 2");
     Token* result = expr(lex);
-    TEST_ASSERT_EQUAL(-1, result->value);
+    TEST_ASSERT_EQUAL(-1, result->value.intValue);
 }
 void test_multiplication(void) {
     lexer* lex = initLexer("2 * 3");
     Token* result = expr(lex);
-    TEST_ASSERT_EQUAL(6, result->value);
+    TEST_ASSERT_EQUAL(6, result->value.intValue);
 }
 void test_division(void) {
     lexer* lex = initLexer("6 / 3");
     Token* result = expr(lex);
-    TEST_ASSERT_EQUAL(2, result->value);
+    TEST_ASSERT_EQUAL(2, result->value.intValue);
 }
 
 void test_modulus(void)
 {
-    TEST_IGNORE_MESSAGE("Need to Implement integer modulus");
+    lexer* lex = initLexer("6 % 3");
+    Token* result = expr(lex);
+    TEST_ASSERT_EQUAL(0, result->value.intValue);
 }
 
 void test_increment(void)
 {
-    TEST_IGNORE_MESSAGE("Need to Implement integer increment");
+    lexer* lex = initLexer("2++");
+    Token* result = expr(lex);
+    TEST_ASSERT_EQUAL(3, result->value.intValue);
 }
 
 void test_decrement(void)
 {
-    TEST_IGNORE_MESSAGE("Need to Implement integer decrement");
+    lexer* lex = initLexer("2--");
+    Token* result = expr(lex);
+    TEST_ASSERT_EQUAL(1, result->value.intValue);
 }
 
 void test_exponentiation(void)
 {
-    TEST_IGNORE_MESSAGE("Need to Implement integer exponentiation");
+    lexer* lex = initLexer("2 ^ 3");
+    Token* result = expr(lex);
+    printf("%d\n", result->value.intValue);
+    printf("%d\n", result->value.doubleValue);
+    printf("%f\n", result->value.floatValue);
+    TEST_ASSERT_EQUAL(8, result->value.intValue);
 }
