@@ -8,24 +8,23 @@
 
 typedef struct lexer
 {
-    char* text;
+    char *text;
     size_t pos;
     Token currentToken;
     char currentChar;
 } lexer;
 
-lexer* initBlankLexer();
-lexer* initLexer(char* text);
+lexer *initBlankLexer();
+lexer *initLexer(char *text);
 
-Token getNextToken(lexer* lex);
-void eat(lexer* lex, TokenType type);
-void* expr(lexer* lex);
-void advance(lexer* lex);
-void skipWhitespace(lexer* lex);
-int integer(lexer* lex);
-Token performOp(lexer* lex, Token left, Token op, Token right);
-void errorWOMsg(lexer* lex);
-void errorWMsg(lexer* lex, char* msg);
-
+Token getNextToken(lexer *lex);
+void eat(lexer *lex, TokenType type);
+void *expr(lexer *lex);
+void advance(lexer *lex);
+void skipWhitespace(lexer *lex);
+Token interpretNumber(lexer *lex);
+Token performOp(lexer *lex, Token left, Token op, Token right);
+void errorWOMsg(lexer *lex);
+void errorWMsg(lexer *lex);
 
 #endif // LEXER_H

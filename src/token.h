@@ -6,6 +6,7 @@
 typedef enum tokentype
 {
     INTEGER,
+    FLOAT,
     DOUBLE,
     PLUS,
     MINUS,
@@ -22,11 +23,13 @@ typedef enum tokentype
     END_OF_FILE
 } TokenType;
 
-const char* tokenTypeToString(TokenType type);
+char *tokenTypeToString(TokenType type);
 
-typedef union tokenvalue {
+typedef union tokenvalue
+{
     int intValue;
     double doubleValue;
+    float floatValue;
     char charValue;
 } TokenValue;
 
@@ -40,6 +43,6 @@ typedef struct token
 Token initBlankToken();
 Token initToken(TokenType type, TokenValue value);
 
-void printToken(Token* token);
+void printToken(Token *token);
 
 #endif // TOKEN_H

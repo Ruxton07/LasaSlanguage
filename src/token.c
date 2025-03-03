@@ -4,12 +4,16 @@
 
 #include <stdio.h>
 
-const char* tokenTypeToString(TokenType type)
+char *tokenTypeToString(TokenType type)
 {
     switch (type)
     {
     case INTEGER:
         return "INTEGER";
+    case FLOAT:
+        return "FLOAT";
+    case DOUBLE:
+        return "DOUBLE";
     case PLUS:
         return "PLUS";
     case MINUS:
@@ -57,9 +61,9 @@ Token initToken(TokenType type, TokenValue value)
     return token;
 }
 
-void printToken(Token* token)
+void printToken(Token *token)
 {
-    printf("Token@%p: Type: %s,\nValues:\n%d\n%d\n%c", (void*)token, tokenTypeToString(token->type),
-            token->value.intValue, token->value.doubleValue, token->value.charValue);
+    printf("Token@%p: Type: %s,\nValues:\n%d\n%d\n%d\n%c", (void *)token, tokenTypeToString(token->type),
+           token->value.intValue, token->value.floatValue, token->value.doubleValue, token->value.charValue);
 }
 #endif // TOKEN_H
