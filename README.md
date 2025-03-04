@@ -21,11 +21,6 @@ LasaSlanguage is a project aimed at creating a custom programming language. This
 - **test/**: Unit tests and test support files.
 - **tools/**: Tools and utilities for development.
 
-## Documentation for Comments
-
-- The format of something like `<INTEGER-CO>` serves as a placeholder for an INTEGER-Compatible-Operator as a shorthand reference.
-- Some operators are set to specific compound literals for a reason specified in the comments.
-
 ## License
 
 This project is licensed under the terms of the [LICENSE](LICENSE) file.
@@ -38,7 +33,7 @@ Contributions are welcome! Please see the [project.yml](project.yml) file for gu
 
 If you have any questions, please let the author (rt.kellar@gmail.com) know via email or by opening an issue.
 
-### Documentation for Comments
+## Documentation for Comments
 
-- The format of something like <INTEGER-CO> serves as a placeholder for an INTEGER-Compatible-Operator as a shorthand reference.
+- The format of something like `<INTEGER-CO>` serves as a placeholder for an INTEGER-Compatible-Operator as a shorthand reference.
 - Some operators are set to specific compound literals for a reason specified in the comments.
