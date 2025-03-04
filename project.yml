@@ -1,8 +1,6 @@
 # =========================================================================
 #   Ceedling - Test-Centered Build System for C
 #   ThrowTheSwitch.org
-#   Copyright (c) 2010-25 Mike Karlesky, Mark VanderVoord, & Greg Williams
-#   SPDX-License-Identifier: MIT
 # =========================================================================
 
 ---
@@ -121,9 +119,11 @@
 #  - Referencing symbols in multiple lists using advanced YAML
 #  - Specifiying symbols used during test preprocessing
 :defines:
+  :common:
+    - DEBUG
+    - UNITY_INCLUDE_CONFIG_H
   :test:
     - TEST # Simple list option to add symbol 'TEST' to compilation of all files in all test executables
-    - UNITY_INCLUDE_DOUBLE
   :release: []
 
   # Enable to inject name of a test as a unique compilation symbol into its respective executable build.
@@ -202,7 +202,10 @@
 # Configuration options specific to Unity.
 :unity:
   :defines:
-    - UNITY_EXCLUDE_FLOAT
+    - UNITY_INCLUDE_DOUBLE
+    - UNITY_INCLUDE_FLOAT
+    - UNITY_DOUBLE_PRECISION=1e-12
+    - UNITY_FLOAT_PRECISION=1e-6
 
 # You can optionally have ceedling create environment variables for you before
 # performing the rest of its tasks.
@@ -244,7 +247,7 @@
     # Make an HTML summary report.
     - HtmlBasic
     # - HtmlDetailed
-    # - Text
+    - Text
     # - Cobertura
     # - SonarQube
     # - JSON
