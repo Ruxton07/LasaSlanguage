@@ -360,8 +360,21 @@ Token performOp(lexer *lex, Token left, Token op, Token right)
         }
         break;
     case MOD:
-        result.type = INTEGER;
-        result.value.intValue = left.value.intValue % right.value.intValue;
+        result.type = left.type == DOUBLE || right.type == DOUBLE ? DOUBLE : (left.type == FLOAT || right.type == FLOAT ? FLOAT : INTEGER);
+        if (result.type == DOUBLE)
+        {
+            result.value.doubleValue = fmod((left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)),
+                                            (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue)));
+        }
+        else if (result.type == FLOAT)
+        {
+            result.value.floatValue = fmod((left.type == FLOAT ? left.value.floatValue : left.value.intValue),
+                                           (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
+        }
+        else
+        {
+            result.value.intValue = left.value.intValue % right.value.intValue;
+        }
         break;
     case POSTINC:
         result.type = left.type;
