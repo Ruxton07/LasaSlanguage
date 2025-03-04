@@ -6,6 +6,7 @@
 
 void setUp(void)
 {
+    #define UNITY_INCLUDE_DOUBLE
 }
 
 void tearDown(void)
