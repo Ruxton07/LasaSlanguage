@@ -110,8 +110,10 @@
 # and release collections. Usually it's better to use paths and let
 # Ceedling do the work for you!
 :files:
-  :test: []
-  :source: []
+  :test:
+  - src/**
+  :source:
+  - src/**
 
 # Compilation symbols to be injected into builds
 # See documentation for advanced options:
