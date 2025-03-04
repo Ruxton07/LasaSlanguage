@@ -133,21 +133,17 @@ void eat(lexer *lex, TokenType type)
     }
     else
     {
-        printf("hi1\n");
         printf("Expected token type: %s, but got: %s", tokenTypeToString(type), tokenTypeToString(lex->currentToken.type));
         errorWMsg(lex);
-        printf("hi2\n");
     }
 }
 
 void *expr(lexer *lex)
 {
-    // expr --> INTEGER <INTEGER-CO> INTEGER
     int terminate = 0;
     lex->currentToken = getNextToken(lex);
     Token left = lex->currentToken;
-    eat(lex, INTEGER);
-    // check if the current token is an <INTEGER-CO> token
+    eat(lex, left.type);
     Token op = lex->currentToken;
     switch (op.type)
     {
@@ -185,11 +181,8 @@ void *expr(lexer *lex)
     if (!terminate)
     {
         right = lex->currentToken;
-        eat(lex, INTEGER);
+        eat(lex, right.type);
     }
-    // at this point INTEGER <INTEGER-CO> INTEGER sequence of tokens has been
-    // successfully found and the method can just return the result of
-    // performing such operation on two integers
     Token *resultToken = malloc(sizeof(Token));
     *resultToken = performOp(lex, left, op, right);
     return resultToken;
@@ -415,13 +408,13 @@ Token performOp(lexer *lex, Token left, Token op, Token right)
 
 void errorWOMsg(lexer *lex)
 {
-    printf("\nERROR PARSING INPUT: UNKNOWN ERROR");
+    printf("\nERROR PARSING INPUT: UNKNOWN ERROR\n");
     exit(1);
 }
 
 void errorWMsg(lexer *lex)
 {
-    printf("\nERROR PARSING INPUT");
+    printf("\nERROR PARSING INPUT\n");
     exit(1);
 }
 #endif // LEXER_H

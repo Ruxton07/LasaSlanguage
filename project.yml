@@ -123,6 +123,7 @@
 :defines:
   :test:
     - TEST # Simple list option to add symbol 'TEST' to compilation of all files in all test executables
+    - UNITY_INCLUDE_DOUBLE
   :release: []
 
   # Enable to inject name of a test as a unique compilation symbol into its respective executable build.
