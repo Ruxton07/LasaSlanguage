@@ -1,8 +1,9 @@
 // lexer.c
-#include "lexer.h"
+#include <lexer.h>
 #ifdef LEXER_H
 
-#include "token.c"
+#include <token.h>
+#include <stack.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -138,53 +139,69 @@ void eat(lexer *lex, TokenType type)
     }
 }
 
-void *expr(lexer *lex)
-{
-    int terminate = 0;
-    lex->currentToken = getNextToken(lex);
-    Token left = lex->currentToken;
-    eat(lex, left.type);
-    Token op = lex->currentToken;
-    switch (op.type)
-    {
-    case PLUS:
-        eat(lex, PLUS);
-        break;
-    case MINUS:
-        eat(lex, MINUS);
-        break;
-    case MUL:
-        eat(lex, MUL);
-        break;
-    case DIV:
-        eat(lex, DIV);
-        break;
-    case EXP:
-        eat(lex, EXP);
-        break;
-    case MOD:
-        eat(lex, MOD);
-        break;
-    case POSTINC:
-        eat(lex, POSTINC);
-        terminate = 1;
-        break;
-    case POSTDEC:
-        eat(lex, POSTDEC);
-        terminate = 1;
-        break;
-    default:
-        printf("Unknown operator: %s", tokenTypeToString(op.type));
-        errorWMsg(lex);
+void *expr(lexer *lex) {
+    int len = strlen(lex->text);
+    if (len == 0) {
+        return NULL;
     }
-    Token right = initToken(INTEGER, (TokenValue){0});
-    if (!terminate)
-    {
-        right = lex->currentToken;
-        eat(lex, right.type);
+    Stack *values = createStack(len);
+    Stack *ops = createStack(len);
+
+    while (lex->currentChar != '\0') {
+        if (isspace(lex->currentChar)) {
+            skipWhitespace(lex);
+            continue;
+        }
+
+        if (isdigit(lex->currentChar)) {
+            Token value = interpretNumber(lex);
+            push(values, value);
+        } else if (lex->currentChar == '(') {
+            Token lparen = initToken(LPAREN, (TokenValue){0});
+            push(ops, lparen);
+            advance(lex);
+        } else if (lex->currentChar == ')') {
+            while (!isEmpty(ops) && peek(ops).type != LPAREN) {
+                Token op = pop(ops);
+                Token right = pop(values);
+                Token left = pop(values);
+                Token result = applyOp(left, op, right);
+                push(values, result);
+            }
+            pop(ops); // Remove the left parenthesis
+            advance(lex);
+        } else if (isOperator(lex->currentChar)) {
+            Token op = getNextToken(lex);
+            while (!isEmpty(ops) && precedence(peek(ops).type) >= precedence(op.type)) {
+                Token topOp = pop(ops);
+                Token right = pop(values);
+                Token left = pop(values);
+                Token result = applyOp(left, topOp, right);
+                push(values, result);
+            }
+            push(ops, op);
+        } else {
+            printf("Unrecognized Token: %c", lex->currentChar);
+            errorWMsg(lex);
+        }
     }
+
+    while (!isEmpty(ops)) {
+        Token op = pop(ops);
+        Token right = pop(values);
+        Token left = pop(values);
+        Token result = applyOp(left, op, right);
+        push(values, result);
+    }
+
     Token *resultToken = malloc(sizeof(Token));
-    *resultToken = performOp(lex, left, op, right);
+    *resultToken = pop(values);
+
+    free(values->data);
+    free(values);
+    free(ops->data);
+    free(ops);
+
     return resultToken;
 }
 
@@ -225,6 +242,7 @@ Token interpretNumber(lexer *lex)
         else if (lex->currentChar == 'f')
         {
             isFloat = 1;
+            isDouble = 0;
             advance(lex); // Move past the 'f' character
             break;
         }
@@ -263,8 +281,8 @@ Token performOp(lexer *lex, Token left, Token op, Token right)
         if (left.type == DOUBLE || right.type == DOUBLE)
         {
             result.type = DOUBLE;
-            result.value.doubleValue = (left.type == DOUBLE ? left.value.doubleValue : left.value.intValue) +
-                                       (right.type == DOUBLE ? right.value.doubleValue : right.value.intValue);
+            result.value.doubleValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) +
+                                       (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
         }
         else if (left.type == FLOAT || right.type == FLOAT)
         {
@@ -282,8 +300,8 @@ Token performOp(lexer *lex, Token left, Token op, Token right)
         if (left.type == DOUBLE || right.type == DOUBLE)
         {
             result.type = DOUBLE;
-            result.value.doubleValue = (left.type == DOUBLE ? left.value.doubleValue : left.value.intValue) -
-                                       (right.type == DOUBLE ? right.value.doubleValue : right.value.intValue);
+            result.value.doubleValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) -
+                                       (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
         }
         else if (left.type == FLOAT || right.type == FLOAT)
         {
@@ -301,8 +319,8 @@ Token performOp(lexer *lex, Token left, Token op, Token right)
         if (left.type == DOUBLE || right.type == DOUBLE)
         {
             result.type = DOUBLE;
-            result.value.doubleValue = (left.type == DOUBLE ? left.value.doubleValue : left.value.intValue) *
-                                       (right.type == DOUBLE ? right.value.doubleValue : right.value.intValue);
+            result.value.doubleValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) *
+                                       (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
         }
         else if (left.type == FLOAT || right.type == FLOAT)
         {
@@ -320,8 +338,8 @@ Token performOp(lexer *lex, Token left, Token op, Token right)
         if (left.type == DOUBLE || right.type == DOUBLE)
         {
             result.type = DOUBLE;
-            result.value.doubleValue = (left.type == DOUBLE ? left.value.doubleValue : left.value.intValue) /
-                                       (right.type == DOUBLE ? right.value.doubleValue : right.value.intValue);
+            result.value.doubleValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) /
+                                       (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
         }
         else if (left.type == FLOAT || right.type == FLOAT)
         {
