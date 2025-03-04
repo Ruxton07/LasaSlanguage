@@ -1,5 +1,8 @@
 // test_subtraction.c
 #include "lexer.h"
+#include "token.h"
+#include "stack.h"
+
 #include "unity.h"
 #include "test_subtraction.h"
 #ifdef TEST_SUBTRACTION_H

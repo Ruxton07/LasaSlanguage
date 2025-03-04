@@ -1,5 +1,8 @@
 // test_exponentiation.c
 #include "lexer.h"
+#include "token.h"
+#include "stack.h"
+
 #include "unity.h"
 #include "test_exponentiation.h"
 #ifdef TEST_EXPONENTIATION_H

@@ -1,5 +1,8 @@
 // test_postdec.c
 #include "lexer.h"
+#include "token.h"
+#include "stack.h"
+
 #include "unity.h"
 #include "test_postdec.h"
 #ifdef TEST_POSTDEC_H

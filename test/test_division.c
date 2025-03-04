@@ -1,5 +1,8 @@
 // test_division.c
 #include "lexer.h"
+#include "token.h"
+#include "stack.h"
+
 #include "unity.h"
 #include "test_division.h"
 #ifdef TEST_DIVISION_H

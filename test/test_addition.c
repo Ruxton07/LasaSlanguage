@@ -1,5 +1,8 @@
 // test_addition.c
 #include "lexer.h"
+#include "token.h"
+#include "stack.h"
+
 #include "unity.h"
 #include "test_addition.h"
 #ifdef TEST_ADDITION_H

@@ -1,5 +1,8 @@
 // test_modulus.c
 #include "lexer.h"
+#include "token.h"
+#include "stack.h"
+
 #include "unity.h"
 #include "test_modulus.h"
 #ifdef TEST_MODULUS_H

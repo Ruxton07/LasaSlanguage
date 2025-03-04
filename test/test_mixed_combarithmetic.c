@@ -1,5 +1,8 @@
 // test_mixed_combarithmetic.c
 #include "lexer.h"
+#include "token.h"
+#include "stack.h"
+
 #include "unity.h"
 #include "test_mixed_combarithmetic.h"
 #ifdef TEST_MIXED_COMBARITHMETIC_H

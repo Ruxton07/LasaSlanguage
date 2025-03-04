@@ -1,5 +1,8 @@
 // test_postinc.c
 #include "lexer.h"
+#include "token.h"
+#include "stack.h"
+
 #include "unity.h"
 #include "test_postinc.h"
 #ifdef TEST_POSTINC_H

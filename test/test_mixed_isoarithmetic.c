@@ -1,5 +1,8 @@
 // test_isoarithmetic.c
 #include "lexer.h"
+#include "token.h"
+#include "stack.h"
+
 #include "unity.h"
 #include "test_mixed_isoarithmetic.h"
 #ifdef TEST_MIXED_ISOARITHMETIC_H
