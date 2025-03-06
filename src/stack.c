@@ -63,3 +63,15 @@ int precedence(TokenType op) {
 int isOperator(TokenType type) {
     return type == PLUS || type == MINUS || type == MUL || type == DIV || type == EXP || type == MOD || type == POSTINC || type == POSTDEC;
 }
+
+void stackToString(Stack *stack) {
+    char *str = (char *)malloc(1000 * sizeof(char));
+    strcpy(str, "Stack: ");
+    for (int i = 0; i <= stack->top; i++) {
+        char *tokenStr = tokenTypeToString(stack->data[i].type);
+        strcat(str, tokenStr);
+        strcat(str, " ");
+    }
+    printf("%s\n", str);
+    free(str);
+}
