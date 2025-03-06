@@ -30,6 +30,7 @@ void push(Stack *stack, Token item) {
     if (isFull(stack))
         return;
     stack->data[++stack->top] = item;
+    printf("NOW..TOP IS %d\n", stack->top);
 }
 
 Token pop(Stack *stack) {
