@@ -31,7 +31,7 @@ void test_modulus_double_int(void)
 
 void test_modulus_double_float(void)
 {
-    lexer *lex = initLexer("5.5 % 2.0f");
+    lexer *lex = initLexer("5.5 \% 2.0f");
     Token *result = expr(lex);
     TEST_ASSERT_EQUAL_DOUBLE(1.5, result->value.doubleValue);
 }
@@ -52,7 +52,7 @@ void test_modulus_int_double(void)
 
 void test_modulus_int_float(void)
 {
-    lexer *lex = initLexer("5 % 2.5f");
+    lexer *lex = initLexer("5 \% 2.5f");
     Token *result = expr(lex);
     TEST_ASSERT_EQUAL_FLOAT(0.0, result->value.floatValue);
 }

@@ -32,6 +32,7 @@ void test_postincrement_float(void)
 void test_postincrement_double(void)
 {
     lexer *lex = initLexer("2.5++");
+    printf("ok are u dumb or dumb\n");
     Token *result = expr(lex);
     TEST_ASSERT_EQUAL_DOUBLE(3.5, result->value.doubleValue);
 }
