@@ -2,7 +2,7 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include <token.h>
+#include "token.h"
 
 typedef struct stack {
     Token *data;
@@ -18,6 +18,5 @@ Token pop(Stack *stack);
 Token peek(Stack *stack);
 int precedence(TokenType op);
 int isOperator(TokenType type);
-Token applyOp(Token left, Token op, Token right);
 
 #endif // STACK_H

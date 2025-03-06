@@ -1,11 +1,12 @@
 // lexer.c
-#include <lexer.h>
-#ifdef LEXER_H
+#include "lexer.h"
 
-#include <token.h>
-#include <stack.h>
+#include "token.h"
+#include "stack.h"
+
 #include <ctype.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <math.h>
 
@@ -119,7 +120,7 @@ Token getNextToken(lexer *lex)
             lex->currentToken = initToken(RPAREN, (TokenValue){0});
             return lex->currentToken;
         }
-        printf("Unrecognized Token: %s", lex->currentChar);
+        printf("Unrecognized Token: -->%s<--", lex->currentChar);
         errorWMsg(lex);
     }
     lex->currentToken = initBlankToken();
@@ -165,23 +166,23 @@ void *expr(lexer *lex) {
                 Token op = pop(ops);
                 Token right = pop(values);
                 Token left = pop(values);
-                Token result = applyOp(left, op, right);
+                Token result = performOp(left, op, right);
                 push(values, result);
             }
             pop(ops); // Remove the left parenthesis
             advance(lex);
-        } else if (isOperator(lex->currentChar)) {
+        } else if (isOperator(charToTokenType(lex->currentChar))) {
             Token op = getNextToken(lex);
             while (!isEmpty(ops) && precedence(peek(ops).type) >= precedence(op.type)) {
                 Token topOp = pop(ops);
                 Token right = pop(values);
                 Token left = pop(values);
-                Token result = applyOp(left, topOp, right);
+                Token result = performOp(left, topOp, right);
                 push(values, result);
             }
             push(ops, op);
         } else {
-            printf("Unrecognized Token: %c", lex->currentChar);
+            printf("Unrecognized Char: -->%c<--", lex->currentChar);
             errorWMsg(lex);
         }
     }
@@ -190,7 +191,7 @@ void *expr(lexer *lex) {
         Token op = pop(ops);
         Token right = pop(values);
         Token left = pop(values);
-        Token result = applyOp(left, op, right);
+        Token result = performOp(left, op, right);
         push(values, result);
     }
 
@@ -272,7 +273,7 @@ Token interpretNumber(lexer *lex)
     return token;
 }
 
-Token performOp(lexer *lex, Token left, Token op, Token right)
+Token performOp(Token left, Token op, Token right)
 {
     Token result;
     switch (op.type)
@@ -419,7 +420,6 @@ Token performOp(lexer *lex, Token left, Token op, Token right)
         break;
     default:
         printf("Unknown operator: %d", tokenTypeToString(op.type));
-        errorWMsg(lex);
     }
     return result;
 }
@@ -435,4 +435,3 @@ void errorWMsg(lexer *lex)
     printf("\nERROR PARSING INPUT\n");
     exit(1);
 }
-#endif // LEXER_H

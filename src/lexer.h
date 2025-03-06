@@ -2,7 +2,8 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-#include <token.h>
+#include "token.h"
+
 #include <stddef.h>
 
 typedef struct lexer
@@ -22,7 +23,7 @@ void *expr(lexer *lex);
 void advance(lexer *lex);
 void skipWhitespace(lexer *lex);
 Token interpretNumber(lexer *lex);
-Token performOp(lexer *lex, Token left, Token op, Token right);
+Token performOp(Token left, Token op, Token right);
 void errorWOMsg(lexer *lex);
 void errorWMsg(lexer *lex);
 

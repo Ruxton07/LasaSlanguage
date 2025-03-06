@@ -1,6 +1,5 @@
 // token.c
 #include "token.h"
-#ifdef TOKEN_H
 
 #include <stdio.h>
 
@@ -45,6 +44,31 @@ char *tokenTypeToString(TokenType type)
     }
 }
 
+TokenType charToTokenType(char c)
+{
+    switch (c)
+    {
+    case '+':
+        return PLUS;
+    case '-':
+        return MINUS;
+    case '*':
+        return MUL;
+    case '/':
+        return DIV;
+    case '^':
+        return EXP;
+    case '%':
+        return MOD;
+    case '(':
+        return LPAREN;
+    case ')':
+        return RPAREN;
+    default:
+        return END_OF_FILE;
+    }
+}
+
 Token initBlankToken()
 {
     Token token;
@@ -66,4 +90,3 @@ void printToken(Token *token)
     printf("Token@%p: Type: %s,\nValues:\n%d\n%d\n%d\n%c", (void *)token, tokenTypeToString(token->type),
            token->value.intValue, token->value.floatValue, token->value.doubleValue, token->value.charValue);
 }
-#endif // TOKEN_H

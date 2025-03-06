@@ -1,15 +1,14 @@
 // stack.c
-#include <stack.h>
-#ifdef STACK_H
+#include "stack.h"
 
-#include <token.h>
+#include "token.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
-#include <lexer.h>
+
 
 Stack *createStack(int capacity) {
     Stack *stack = (Stack *)malloc(sizeof(Stack));
@@ -61,11 +60,5 @@ int precedence(TokenType op) {
 }
 
 int isOperator(TokenType type) {
-    return type == PLUS || type == MINUS || type == MUL || type == DIV || type == EXP;
+    return type == PLUS || type == MINUS || type == MUL || type == DIV || type == EXP || type == MOD || type == POSTINC || type == POSTDEC;
 }
-
-Token applyOp(Token left, Token op, Token right) {
-    return performOp(NULL, left, op, right);
-}
-
-#endif // STACK_H

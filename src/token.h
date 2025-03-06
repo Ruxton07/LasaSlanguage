@@ -23,6 +23,7 @@ typedef enum tokentype
 } TokenType;
 
 char *tokenTypeToString(TokenType type);
+TokenType charToTokenType(char c);
 
 typedef union tokenvalue
 {
