@@ -122,23 +122,23 @@ void test_mixed_exponentiation_3(void)
 
 void test_mixed_modulus_1(void)
 {
-    lexer *lex = initLexer("(1\%2.5)\%3 \% 4.0f");
+    lexer *lex = initLexer("(40\%4.5)\%3 \% 4.0f");
     Token *result = expr(lex);
-    TEST_ASSERT_EQUAL_DOUBLE(0.5, result->value.doubleValue);
+    TEST_ASSERT_EQUAL_DOUBLE(1.0, result->value.doubleValue);
 }
 
 void test_mixed_modulus_2(void)
 {
-    lexer *lex = initLexer("2.0f \% (3 \% 4.0f) \% 5.0");
+    lexer *lex = initLexer("(3 \% 4.0f) \% 100.0f");
     Token *result = expr(lex);
-    TEST_ASSERT_EQUAL_DOUBLE(2.0, result->value.doubleValue);
+    TEST_ASSERT_EQUAL_FLOAT(3.0, result->value.floatValue);
 }
 
 void test_mixed_modulus_3(void)
 {
-    lexer *lex = initLexer("1 \% (2 \% (3 \% 4))");
+    lexer *lex = initLexer("4 \% (3 \% (2 \% 3))");
     Token *result = expr(lex);
-    TEST_ASSERT_EQUAL(1, result->value.intValue);
+    TEST_ASSERT_EQUAL(0, result->value.intValue);
 }
 
 void test_mixed_post_increment_1(void)

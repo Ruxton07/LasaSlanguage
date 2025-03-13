@@ -17,14 +17,14 @@ void tearDown(void)
 
 void test_modulus_int_int(void)
 {
-    lexer *lex = initLexer("6 % 3");
+    lexer *lex = initLexer("6 \% 3");
     Token *result = expr(lex);
     TEST_ASSERT_EQUAL(0, result->value.intValue);
 }
 
 void test_modulus_double_int(void)
 {
-    lexer *lex = initLexer("5.5 % 2");
+    lexer *lex = initLexer("5.5 \% 2");
     Token *result = expr(lex);
     TEST_ASSERT_EQUAL_DOUBLE(1.5, result->value.doubleValue);
 }
@@ -38,14 +38,14 @@ void test_modulus_double_float(void)
 
 void test_modulus_float_double(void)
 {
-    lexer *lex = initLexer("5.5f % 2.0");
+    lexer *lex = initLexer("5.5f \% 2.0");
     Token *result = expr(lex);
     TEST_ASSERT_EQUAL_DOUBLE(1.5, result->value.doubleValue);
 }
 
 void test_modulus_int_double(void)
 {
-    lexer *lex = initLexer("5 % 2.5");
+    lexer *lex = initLexer("5 \% 2.5");
     Token *result = expr(lex);
     TEST_ASSERT_EQUAL_DOUBLE(0.0, result->value.doubleValue);
 }
@@ -59,7 +59,7 @@ void test_modulus_int_float(void)
 
 void test_modulus_float_int(void)
 {
-    lexer *lex = initLexer("5.5f % 2");
+    lexer *lex = initLexer("5.5f \% 2");
     Token *result = expr(lex);
     TEST_ASSERT_EQUAL_FLOAT(1.5, result->value.floatValue);
 }
