@@ -19,6 +19,6 @@ Token peek(Stack *stack);
 int precedence(TokenType op);
 int isOperator(TokenType type);
 
-char *stackToString(Stack *stack);
+void stackToString(Stack *stack);
 
 #endif // STACK_H

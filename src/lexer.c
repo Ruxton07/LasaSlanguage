@@ -39,10 +39,14 @@ Token getNextToken(lexer *lex)
             skipWhitespace(lex);
             continue;
         }
-
+        if (lex->currentChar == '\\')
+        {
+            advance(lex);
+            continue;
+        }
         if (isdigit(lex->currentChar))
         {
-            lex->currentToken = interpretNumber(lex);
+            lex->currentToken = *interpretNumber(lex);
             return lex->currentToken;
         }
 
@@ -121,7 +125,7 @@ Token getNextToken(lexer *lex)
             return lex->currentToken;
         }
         printf("Unrecognized Token: -->%s<--", lex->currentChar);
-        errorWMsg(lex);
+        errorLex();
     }
     lex->currentToken = initBlankToken();
     return lex->currentToken;
@@ -136,7 +140,7 @@ void eat(lexer *lex, TokenType type)
     else
     {
         printf("Expected token type: %s, but got: %s", tokenTypeToString(type), tokenTypeToString(lex->currentToken.type));
-        errorWMsg(lex);
+        errorLex();
     }
 }
 
@@ -145,18 +149,23 @@ void *expr(lexer *lex) {
     if (len == 0) {
         return NULL;
     }
-    Stack *values = createStack(len);
-    Stack *ops = createStack(len);
+
+    Stack *values = createStack(len); // Stack for values
+    Stack *ops = createStack(len);    // Stack for operators
 
     while (lex->currentChar != '\0') {
         if (isspace(lex->currentChar)) {
             skipWhitespace(lex);
             continue;
         }
-
-        if (isdigit(lex->currentChar)) {
-            Token value = interpretNumber(lex);
-            push(values, value);
+        if (lex->currentChar == '\\') {
+            advance(lex);
+            continue;
+        }
+        if (isdigit(lex->currentChar) || lex->currentChar == '.') {
+            Token *value = malloc(sizeof(Token));
+            value = interpretNumber(lex);
+            push(values, *value);
         } else if (lex->currentChar == '(') {
             Token lparen = initToken(LPAREN, (TokenValue){0});
             push(ops, lparen);
@@ -183,7 +192,7 @@ void *expr(lexer *lex) {
             push(ops, op);
         } else {
             printf("Unrecognized Char: -->%c<--", lex->currentChar);
-            errorWMsg(lex);
+            errorLex();
         }
     }
 
@@ -227,9 +236,12 @@ void skipWhitespace(lexer *lex)
     }
 }
 
-Token interpretNumber(lexer *lex)
+Token *interpretNumber(lexer *lex)
 {
     char result[100];
+    for (int k = 0; k < 100; k++) {
+        result[k] = '\0';
+    }
     int i = 0;
     int isFloat = 0;
     int isDouble = 0;
@@ -245,36 +257,62 @@ Token interpretNumber(lexer *lex)
             isFloat = 1;
             isDouble = 0;
             advance(lex); // Move past the 'f' character
+            i++;
             break;
         }
+        printf("Adding %c to the result arr\n", lex->currentChar);
         result[i] = lex->currentChar;
         advance(lex);
         i++;
     }
-    result[i] = '\0';
+    // remove all values in result arr from 0 to i if they aren't isdigit
+    do
+    {
+        result[i] = '\0';
+        i--;
+    } while (i > 0 && !isdigit(result[i]));
 
-    Token token;
+    char cleanResult[100];
+    for (int k = 0; k < 100; k++) {
+        cleanResult[k] = '\0';
+    }
+    int j = 0;
+    while (j <= i) {
+        cleanResult[j] = result[j];
+        j++;
+    }
+    Token *token = malloc(sizeof(Token));
+    *token = initBlankToken();
+    printf("Final result array: %s\n", cleanResult);
+
     if (isFloat)
     {
-        token.type = FLOAT;
-        token.value.floatValue = atof(result);
+        token->type = FLOAT;
+        token->value.floatValue = atof(cleanResult);
     }
     else if (isDouble)
     {
-        token.type = DOUBLE;
-        token.value.doubleValue = atof(result);
+        token->type = DOUBLE;
+        token->value.doubleValue = atof(cleanResult);
     }
     else
     {
-        token.type = INTEGER;
-        token.value.intValue = atoi(result);
+        token->type = INTEGER;
+        token->value.intValue = atoi(cleanResult);
     }
 
+    printToken(token);
     return token;
 }
 
 Token performOp(Token left, Token op, Token right)
 {
+    printf("Performing operation: %s %s %s\n", numericVal(&left), tokenTypeToString(op.type), numericVal(&right));
+    printf("of format %s %s %s\n", tokenTypeToString(left.type), tokenTypeToString(op.type), tokenTypeToString(right.type));
+    printf("At this moment, tokens are the following:\n");
+    printToken(&left);
+    printToken(&op);
+    printToken(&right);
     Token result;
     switch (op.type)
     {
@@ -336,6 +374,11 @@ Token performOp(Token left, Token op, Token right)
         }
         break;
     case DIV:
+        if (right.type == INTEGER ? right.value.intValue == 0 : (right.type == FLOAT ? right.value.floatValue == 0 : right.value.doubleValue == 0))
+        {
+            printf("Division by zero error\n");
+            errorLex();
+        }
         if (left.type == DOUBLE || right.type == DOUBLE)
         {
             result.type = DOUBLE;
@@ -372,6 +415,11 @@ Token performOp(Token left, Token op, Token right)
         }
         break;
     case MOD:
+        if (right.type == INTEGER ? right.value.intValue == 0 : (right.type == FLOAT ? right.value.floatValue == 0 : right.value.doubleValue == 0))
+        {
+            printf("Modulus by zero error\n");
+            errorLex();
+        }
         result.type = left.type == DOUBLE || right.type == DOUBLE ? DOUBLE : (left.type == FLOAT || right.type == FLOAT ? FLOAT : INTEGER);
         if (result.type == DOUBLE)
         {
@@ -389,6 +437,8 @@ Token performOp(Token left, Token op, Token right)
         }
         break;
     case POSTINC:
+        printf("left: %d\n", left.value.intValue);
+        printf("left type: %d\n", left.type);
         result.type = left.type;
         if (left.type == DOUBLE)
         {
@@ -419,18 +469,12 @@ Token performOp(Token left, Token op, Token right)
         }
         break;
     default:
-        printf("Unknown operator: %d", tokenTypeToString(op.type));
+        printf("Unknown operator: %s", tokenTypeToString(op.type));
     }
     return result;
 }
 
-void errorWOMsg(lexer *lex)
-{
-    printf("\nERROR PARSING INPUT: UNKNOWN ERROR\n");
-    exit(1);
-}
-
-void errorWMsg(lexer *lex)
+void errorLex()
 {
     printf("\nERROR PARSING INPUT\n");
     exit(1);

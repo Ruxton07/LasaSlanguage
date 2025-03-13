@@ -2,6 +2,7 @@
 #include "token.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 char *tokenTypeToString(TokenType type)
 {
@@ -87,6 +88,25 @@ Token initToken(TokenType type, TokenValue value)
 
 void printToken(Token *token)
 {
-    printf("Token@%p: Type: %s,\nValues:\n%d\n%d\n%d\n%c", (void *)token, tokenTypeToString(token->type),
+    printf("Token@%p: Type: %s,\nValues:\n%d\n%f\n%f\n%c\n", (void *)token, tokenTypeToString(token->type),
            token->value.intValue, token->value.floatValue, token->value.doubleValue, token->value.charValue);
+}
+
+char* numericVal(Token *token) {
+    char *val = malloc(20);
+    switch (token->type) {
+        case INTEGER:
+            sprintf(val, "%d", token->value.intValue);
+            break;
+        case FLOAT:
+            sprintf(val, "%f", token->value.floatValue);
+            break;
+        case DOUBLE:
+            sprintf(val, "%f", token->value.doubleValue);
+            break;
+        default:
+            sprintf(val, "Can't resolve NumVal for type: %s", tokenTypeToString(token->type));
+            break;
+    }
+    return val;
 }

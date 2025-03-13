@@ -30,7 +30,6 @@ void push(Stack *stack, Token item) {
     if (isFull(stack))
         return;
     stack->data[++stack->top] = item;
-    printf("NOW..TOP IS %d\n", stack->top);
 }
 
 Token pop(Stack *stack) {
@@ -55,6 +54,9 @@ int precedence(TokenType op) {
             return 2;
         case EXP:
             return 3;
+        case LPAREN:
+        case RPAREN:
+            return -1;
         default:
             return 0;
     }
@@ -65,13 +67,10 @@ int isOperator(TokenType type) {
 }
 
 void stackToString(Stack *stack) {
-    char *str = (char *)malloc(1000 * sizeof(char));
-    strcpy(str, "Stack: ");
+    //printf("Stack: \n");
     for (int i = 0; i <= stack->top; i++) {
-        char *tokenStr = tokenTypeToString(stack->data[i].type);
-        strcat(str, tokenStr);
-        strcat(str, " ");
+        //printf("%d: ", i);
+        //printf("BTW TOP IS %d\n", stack->top);
+        //printToken(&stack->data[i]);
     }
-    printf("%s\n", str);
-    free(str);
 }

@@ -22,9 +22,8 @@ void eat(lexer *lex, TokenType type);
 void *expr(lexer *lex);
 void advance(lexer *lex);
 void skipWhitespace(lexer *lex);
-Token interpretNumber(lexer *lex);
+Token *interpretNumber(lexer *lex);
 Token performOp(Token left, Token op, Token right);
-void errorWOMsg(lexer *lex);
-void errorWMsg(lexer *lex);
+void errorLex();
 
 #endif // LEXER_H

@@ -44,5 +44,6 @@ Token initBlankToken();
 Token initToken(TokenType type, TokenValue value);
 
 void printToken(Token *token);
+char* numericVal(Token *token);
 
 #endif // TOKEN_H
