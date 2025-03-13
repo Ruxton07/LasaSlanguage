@@ -8,6 +8,31 @@
 
 LasaSlanguage is a project aimed at creating a custom programming language. This repository contains the source code, tests, and documentation for the language.
 
+Arithmetic and logic expressions obey the `ID BNBABXBO PEMDAS NEAXO` version of PEMDAS I made up for LasaSlanguage (from first to last):
+
+```
+++ (Incrementation)        [1] | -- first
+-- (Decrementation)        [1] |
+                               |
+~ (Bitwise Negation)       [2] |
+& (Bitwise AND)            [3] |
+$ (Bitwise XOR)            [4] |
+| (Bitwise OR)             [5] |
+                               |
+() (Parentheses)           [6] |
+^ (Exponentiation)         [7] |
+* (Multiplication)         [8] |
+/ (Division)               [8] |
++ (Addition)               [9] |
+- (Subtraction)            [9] |
+                               |
+! (Logical Negation)      [10] |
+== (Logical Equivalence)  [11] |
+&& (Logical AND)          [12] |
+$$ (Logical XOR)          [13] |
+|| (Logical OR)           [14] v -- last
+```
+
 ## Project Structure
 
 - **.github/**: GitHub-specific files and workflows.
