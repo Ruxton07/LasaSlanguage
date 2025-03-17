@@ -180,7 +180,7 @@ void test_mixed_post_decrement_3(void)
 {
     lexer *lex = initLexer("(0.3--)");
     Token *result = expr(lex);
-    TEST_ASSERT_EQUAL_DOUBLE(-0.3, result->value.doubleValue);
+    TEST_ASSERT_EQUAL_DOUBLE(-0.7, result->value.doubleValue);
 }
 
 #endif // TEST_MIXED_ISOARITHMETIC_H
