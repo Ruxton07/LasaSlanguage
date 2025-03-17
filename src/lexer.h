@@ -18,7 +18,7 @@ lexer *initBlankLexer();
 lexer *initLexer(char *text);
 
 Token getNextToken(lexer *lex);
-void eat(lexer *lex, TokenType type);
+int unaryOp(Token op);
 void *expr(lexer *lex);
 void advance(lexer *lex);
 void skipWhitespace(lexer *lex);

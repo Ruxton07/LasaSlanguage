@@ -131,17 +131,10 @@ Token getNextToken(lexer *lex)
     return lex->currentToken;
 }
 
-void eat(lexer *lex, TokenType type)
-{
-    if (lex->currentToken.type == type)
-    {
-        lex->currentToken = getNextToken(lex);
-    }
-    else
-    {
-        printf("Expected token type: %s, but got: %s", tokenTypeToString(type), tokenTypeToString(lex->currentToken.type));
-        errorLex();
-    }
+int unaryOp(Token op) {
+    int unary = 0;
+    unary = (op.type == POSTINC || op.type == POSTDEC);
+    return unary;
 }
 
 void *expr(lexer *lex) {
@@ -182,6 +175,14 @@ void *expr(lexer *lex) {
             advance(lex);
         } else if (isOperator(charToTokenType(lex->currentChar))) {
             Token op = getNextToken(lex);
+            if (unaryOp(op)) {
+                Token left = pop(values);
+                Token right = (Token){.type = INTEGER, .value = (TokenValue){1}};
+                Token result = performOp(left, op, right);
+                push(values, result);
+                continue;
+            }
+            printf("yippee im here\n");
             while (!isEmpty(ops) && precedence(peek(ops).type) >= precedence(op.type)) {
                 Token topOp = pop(ops);
                 Token right = pop(values);
@@ -312,7 +313,9 @@ Token performOp(Token left, Token op, Token right)
     printf("At this moment, tokens are the following:\n");
     printToken(&left);
     printToken(&op);
-    printToken(&right);
+    if (unaryOp(op)) {
+        printToken(&right);
+    }
     Token result;
     switch (op.type)
     {
