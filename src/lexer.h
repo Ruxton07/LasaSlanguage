@@ -3,6 +3,7 @@
 #define LEXER_H
 
 #include "token.h"
+#include "LinkedList.h"
 
 #include <stddef.h>
 
@@ -25,5 +26,6 @@ void skipWhitespace(lexer *lex);
 Token *interpretNumber(lexer *lex);
 Token performOp(Token left, Token op, Token right);
 void errorLex();
+LinkedList *tokenizeSourceCode(char *sourceCode);
 
 #endif // LEXER_H

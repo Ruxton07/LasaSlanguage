@@ -1,8 +1,7 @@
 // lexer.c
 #include "lexer.h"
-
-#include "token.h"
 #include "stack.h"
+#include "LinkedList.h"
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -47,6 +46,41 @@ Token getNextToken(lexer *lex)
         if (isdigit(lex->currentChar))
         {
             lex->currentToken = *interpretNumber(lex);
+            return lex->currentToken;
+        }
+
+        if (isalpha(lex->currentChar) || lex->currentChar == '_')
+        {
+            char identifier[100];
+            int i = 0;
+
+            while (isalnum(lex->currentChar) || lex->currentChar == '_')
+            {
+                identifier[i++] = lex->currentChar;
+                advance(lex);
+            }
+            identifier[i] = '\0';
+
+            if (strcmp(identifier, "int") == 0 || strcmp(identifier, "float") == 0 || strcmp(identifier, "double") == 0)
+            {
+                lex->currentToken = initToken(TYPEASSIGN, (TokenValue){.charValue = '\0'});
+            }
+            else
+            {
+                lex->currentToken = initToken(IDENTIFIER, (TokenValue){.charValue = strdup(identifier)});
+            }
+            return lex->currentToken;
+        }
+
+        if (lex->currentChar == '=')
+        {
+            advance(lex);
+            if (lex->currentChar == '=') {
+                advance(lex);
+                lex->currentToken = initToken(EQ, (TokenValue){0});
+            } else {
+                lex->currentToken = initToken(ASSIGN, (TokenValue){0});
+            }
             return lex->currentToken;
         }
 
@@ -124,7 +158,57 @@ Token getNextToken(lexer *lex)
             lex->currentToken = initToken(RPAREN, (TokenValue){0});
             return lex->currentToken;
         }
-        printf("Unrecognized Token: -->%s<--", lex->currentChar);
+
+        if (lex->currentChar == ';')
+        {
+            advance(lex);
+            lex->currentToken = initToken(SEMICOLON, (TokenValue){0});
+            return lex->currentToken;
+        }
+
+        if (lex->currentChar == '>')
+        {
+            advance(lex);
+            if (lex->currentChar == '=')
+            {
+                advance(lex);
+                lex->currentToken = initToken(GTE, (TokenValue){0});
+            }
+            else
+            {
+                lex->currentToken = initToken(GT, (TokenValue){0});
+            }
+            return lex->currentToken;
+        }
+
+        if (lex->currentChar == '<')
+        {
+            advance(lex);
+            if (lex->currentChar == '=')
+            {
+                advance(lex);
+                lex->currentToken = initToken(LTE, (TokenValue){0});
+            }
+            else
+            {
+                lex->currentToken = initToken(LT, (TokenValue){0});
+            }
+            return lex->currentToken;
+        }
+
+        if (lex->currentChar == '{') {
+            advance(lex);
+            lex->currentToken = initToken(BLOCKSTART, (TokenValue){0});
+            return lex->currentToken;
+        }
+
+        if (lex->currentChar == '}') {
+            advance(lex);
+            lex->currentToken = initToken(BLOCKEND, (TokenValue){0});
+            return lex->currentToken;
+        }
+
+        printf("Unrecognized Token: -->%c<--", lex->currentChar);
         errorLex();
     }
     lex->currentToken = initBlankToken();
@@ -481,4 +565,21 @@ void errorLex()
 {
     printf("\nERROR PARSING INPUT\n");
     exit(1);
+}
+
+LinkedList *tokenizeSourceCode(char *sourceCode) {
+    lexer *lex = initLexer(sourceCode);
+    LinkedList *tokenList = createLinkedList();
+
+    while (lex->currentChar != '\0') {
+        Token token = getNextToken(lex);
+        if (token.type != BLANK) { // Skip blank tokens
+            Token *tokenCopy = malloc(sizeof(Token));
+            *tokenCopy = token;
+            addToken(tokenList, tokenCopy);
+        }
+    }
+
+    free(lex); // Free the lexer
+    return tokenList;
 }
