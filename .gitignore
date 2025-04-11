@@ -65,7 +65,5 @@ dkms.conf
 **/build/vendor
 
 # Testing
-**/build/test
+**/test/*
 
-# Submodules
-**/LasaSlanguage/*
