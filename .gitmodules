@@ -1,0 +1,3 @@
+[submodule "build/submodules/LasaSlanguage"]
+	path = build/submodules/LasaSlanguage
+	url = https://github.com/Ruxton07/LasaSlanguage
