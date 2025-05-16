@@ -61,7 +61,7 @@ int precedence(TokenType op) {
 }
 
 int isOperator(TokenType type) {
-    return type == PLUS || type == MINUS || type == MUL || type == DIV || type == EXP || type == MOD || type == POSTINC || type == POSTDEC;
+    return type == PLUS || type == MINUS || type == MUL || type == DIV || type == EXP || type == MOD || type == POSTINC || type == POSTDEC || type == GT || type == GTE || type == LT || type == LTE || type == EQ || type == NEQ || type == AND || type == OR || type == XOR;
 }
 
 void stackToString(Stack *stack) {

@@ -61,12 +61,41 @@ Token getNextToken(lexer *lex)
             }
             identifier[i] = '\0';
 
-            if (strcmp(identifier, "int") == 0 || strcmp(identifier, "float") == 0 || strcmp(identifier, "double") == 0)
-            {
+            if (strcmp(identifier, "motion") == 0 || strcmp(identifier, "float") == 0 || strcmp(identifier, "double") == 0) {
                 lex->currentToken = initToken(TYPEASSIGN, (TokenValue){.charValue = '\0'});
-            }
-            else
-            {
+            } else if (strcmp(identifier, "midterm") == 0) {
+                lex->currentToken = initToken(IF, (TokenValue){0});
+            } else if (strcmp(identifier, "quiz") == 0) {
+                lex->currentToken = initToken(ELIF, (TokenValue){0});
+            } else if (strcmp(identifier, "nonchalant") == 0) {
+                lex->currentToken = initToken(ELSE, (TokenValue){0});
+            } else if (strcmp(identifier, "while") == 0) {
+                lex->currentToken = initToken(WHILE, (TokenValue){0});
+            } else if (strcmp(identifier, "for") == 0) {
+                lex->currentToken = initToken(FOR, (TokenValue){0});
+            } else if (strcmp(identifier, "return") == 0) {
+                lex->currentToken = initToken(RETURN, (TokenValue){0});
+            } else if (strcmp(identifier, "break") == 0) {
+                lex->currentToken = initToken(BREAK, (TokenValue){0});
+            } else if (strcmp(identifier, "continue") == 0) {
+                lex->currentToken = initToken(CONTINUE, (TokenValue){0});
+            } else if (strcmp(identifier, "and") == 0) {
+                lex->currentToken = initToken(AND, (TokenValue){0});
+            } else if (strcmp(identifier, "or") == 0) {
+                lex->currentToken = initToken(OR, (TokenValue){0});
+            } else if (strcmp(identifier, "not") == 0) {
+                lex->currentToken = initToken(NOT, (TokenValue){0});
+            } else if (strcmp(identifier, "stacia") == 0) {
+                lex->currentToken = initToken(XOR, (TokenValue){0});
+            } else if (strcmp(identifier, "band") == 0) {
+                lex->currentToken = initToken(BAND, (TokenValue){0});
+            } else if (strcmp(identifier, "bor") == 0) {
+                lex->currentToken = initToken(BOR, (TokenValue){0});
+            } else if (strcmp(identifier, "bnot") == 0) {
+                lex->currentToken = initToken(BNOT, (TokenValue){0});
+            } else if (strcmp(identifier, "bxor") == 0) {
+                lex->currentToken = initToken(BXOR, (TokenValue){0});
+            } else {
                 lex->currentToken = initToken(IDENTIFIER, (TokenValue){.charValue = strdup(identifier)});
             }
             return lex->currentToken;
@@ -266,7 +295,6 @@ void *expr(lexer *lex) {
                 push(values, result);
                 continue;
             }
-            printf("yippee im here\n");
             while (!isEmpty(ops) && precedence(peek(ops).type) >= precedence(op.type)) {
                 Token topOp = pop(ops);
                 Token right = pop(values);
@@ -345,7 +373,7 @@ Token *interpretNumber(lexer *lex)
             i++;
             break;
         }
-        printf("Adding %c to the result arr\n", lex->currentChar);
+        //printf("Adding %c to the result arr\n", lex->currentChar);
         result[i] = lex->currentChar;
         advance(lex);
         i++;
@@ -368,7 +396,7 @@ Token *interpretNumber(lexer *lex)
     }
     Token *token = malloc(sizeof(Token));
     *token = initBlankToken();
-    printf("Final result array: %s\n", cleanResult);
+    // printf("Final result array: %s\n", cleanResult);
 
     if (isFloat)
     {
@@ -386,20 +414,20 @@ Token *interpretNumber(lexer *lex)
         token->value.intValue = atoi(cleanResult);
     }
 
-    printToken(token);
+    //printToken(token);
     return token;
 }
 
 Token performOp(Token left, Token op, Token right)
 {
-    printf("Performing operation: %s %s %s\n", numericVal(&left), tokenTypeToString(op.type), numericVal(&right));
-    printf("of format %s %s %s\n", tokenTypeToString(left.type), tokenTypeToString(op.type), tokenTypeToString(right.type));
-    printf("At this moment, tokens are the following:\n");
-    printToken(&left);
+    // printf("Performing operation: %s %s %s\n", numericVal(&left), tokenTypeToString(op.type), numericVal(&right));
+    // printf("of format %s %s %s\n", tokenTypeToString(left.type), tokenTypeToString(op.type), tokenTypeToString(right.type));
+    // printf("At this moment, tokens are the following:\n");
+    /** printToken(&left);
     printToken(&op);
     if (unaryOp(op)) {
         printToken(&right);
-    }
+    }*/
     Token result;
     switch (op.type)
     {
@@ -524,8 +552,8 @@ Token performOp(Token left, Token op, Token right)
         }
         break;
     case POSTINC:
-        printf("left: %d\n", left.value.intValue);
-        printf("left type: %d\n", left.type);
+        // printf("left: %d\n", left.value.intValue);
+        // printf("left type: %d\n", left.type);
         result.type = left.type;
         if (left.type == DOUBLE)
         {
@@ -555,6 +583,55 @@ Token performOp(Token left, Token op, Token right)
             result.value.intValue = left.value.intValue - 1;
         }
         break;
+    case GT:
+        result.type = INTEGER;
+        result.value.intValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) >
+                                (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
+        break;
+    case LT:
+        result.type = INTEGER;
+        result.value.intValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) <
+                                (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
+        break;
+    case GTE:
+        result.type = INTEGER;
+        result.value.intValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) >=
+                                (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
+        break;
+    case LTE:
+        result.type = INTEGER;
+        result.value.intValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) <=
+                                (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
+        break;
+    case EQ:
+        result.type = INTEGER;
+        result.value.intValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) ==
+                                (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
+        break;
+    case NEQ:
+        result.type = INTEGER;
+        result.value.intValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) !=
+                                (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
+        break;
+    case AND:
+        result.type = INTEGER;
+        result.value.intValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) &&
+                                (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
+        break;
+    case OR:
+        result.type = INTEGER;
+        result.value.intValue = (left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) ||
+                                (right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue));
+        break;
+    case NOT:
+        result.type = INTEGER;
+        result.value.intValue = !((left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) != 0);
+        break;
+    case XOR:
+        result.type = INTEGER;
+        result.value.intValue = ((left.type == DOUBLE ? left.value.doubleValue : (left.type == FLOAT ? left.value.floatValue : left.value.intValue)) != 0) ^
+                                ((right.type == DOUBLE ? right.value.doubleValue : (right.type == FLOAT ? right.value.floatValue : right.value.intValue)) != 0);
+        break;
     default:
         printf("Unknown operator: %s", tokenTypeToString(op.type));
     }
@@ -581,5 +658,6 @@ LinkedList *tokenizeSourceCode(char *sourceCode) {
     }
 
     free(lex); // Free the lexer
+    // printLinkedList(tokenList);
     return tokenList;
 }

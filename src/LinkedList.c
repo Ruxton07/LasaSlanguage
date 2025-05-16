@@ -50,9 +50,10 @@ Token *removeToken(LinkedList *list) {
 void printLinkedList(LinkedList *list) {
     Node *current = list->head;
     while (current) {
-        printf("Token(Type: %s, Value: %s)\n", current->token->type, current->token->value);
+        printf("%s-->", tokenTypeToString(current->token->type));
         current = current->next;
     }
+    printf("NULL\n");
 }
 
 // Free the LinkedList and its contents

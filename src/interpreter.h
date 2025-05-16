@@ -32,5 +32,6 @@ Token *eval(LinkedList *list);
 void parseExpr(interpreter *interp);
 void parseBlock(interpreter *interp);
 void error(interpreter *interp, const char *message);
+void deinit(interpreter *interp);
 
 #endif // INTERPRETER_H

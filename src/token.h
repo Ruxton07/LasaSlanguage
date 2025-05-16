@@ -26,8 +26,8 @@ typedef enum tokentype
     END_OF_FILE,
     // INSTRUCTIONS
     IF,
-    ELSE,
     ELIF,
+    ELSE,
     WHILE,
     FOR,
     RETURN,
