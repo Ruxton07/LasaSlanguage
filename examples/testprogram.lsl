@@ -1,4 +1,5 @@
-drip testprogram.lsl in "LASA Slanguage": Created and designed by Ryan Kellar, 2025.
+drip testprogram.lsl in LASA Slanguage.
+drip This is a comment
 hear me out factorial(n) {
     midterm n opping 1:
         slay 1
@@ -21,5 +22,5 @@ based {
     ur_cooked("An error occurred")
 }
 hop off {
-    yap("ts pmo pmo pmo ts ts ts pmo")
+    yap("Hello, World!")
 }

@@ -275,7 +275,8 @@ void parseExpr(interpreter *interp) {
                         parseBlock(interp);
                         // After one block, make the interpreter advanceInterp past all subsequent
                         // elif and else blocks until it reachs a non-elif/non-else token
-                        while (interp->curNode && (interp->curNode->token->type == ELIF || interp->curNode->token->type == ELSE)) {
+                        while (interp->curNode && (interp->curNode->token->type == ELIF ||
+                            interp->curNode->token->type == ELSE)) {
                             while (interp->curNode->token->type != BLOCKEND) {
                                 advanceInterp(interp);
                             }

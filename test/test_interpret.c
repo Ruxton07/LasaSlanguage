@@ -51,7 +51,6 @@ void test_interpret_2(void) {
 
     interpret(interp);
     printVariables();
-    printf("gng what");
     deinit(interp);
     printf("===== end test_interpret_2 =====");
     printf("\n");
@@ -110,10 +109,10 @@ void test_interpret_5(void) {
     char *sourceCode = " \
     motion a = (1 + 4 + 0); \
     motion b = 10; \
-    midterm (a <= b) { \
+    midterm (a >= b) { \
         a = a + b; \
-    } quiz (a stacia b) { \
-        b = b - a; \
+    } quiz (a > b cracked b < a) { \
+        b = b - a/5; \
     } nonchalant { \
         a = a * b; \
     }";

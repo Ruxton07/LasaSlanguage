@@ -123,9 +123,9 @@ static void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE l
   UnityBegin("test_interpret.c");
   run_test(test_interpret_1, "test_interpret_1", 22);
   run_test(test_interpret_2, "test_interpret_2", 36);
-  run_test(test_interpret_3, "test_interpret_3", 61);
-  run_test(test_interpret_4, "test_interpret_4", 84);
-  run_test(test_interpret_5, "test_interpret_5", 107);
+  run_test(test_interpret_3, "test_interpret_3", 60);
+  run_test(test_interpret_4, "test_interpret_4", 83);
+  run_test(test_interpret_5, "test_interpret_5", 106);
 
   return UNITY_END();
 }

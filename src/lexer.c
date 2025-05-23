@@ -85,7 +85,7 @@ Token getNextToken(lexer *lex)
                 lex->currentToken = initToken(OR, (TokenValue){0});
             } else if (strcmp(identifier, "not") == 0) {
                 lex->currentToken = initToken(NOT, (TokenValue){0});
-            } else if (strcmp(identifier, "stacia") == 0) {
+            } else if (strcmp(identifier, "cracked") == 0) {
                 lex->currentToken = initToken(XOR, (TokenValue){0});
             } else if (strcmp(identifier, "band") == 0) {
                 lex->currentToken = initToken(BAND, (TokenValue){0});
@@ -418,8 +418,7 @@ Token *interpretNumber(lexer *lex)
     return token;
 }
 
-Token performOp(Token left, Token op, Token right)
-{
+Token performOp(Token left, Token op, Token right) {
     // printf("Performing operation: %s %s %s\n", numericVal(&left), tokenTypeToString(op.type), numericVal(&right));
     // printf("of format %s %s %s\n", tokenTypeToString(left.type), tokenTypeToString(op.type), tokenTypeToString(right.type));
     // printf("At this moment, tokens are the following:\n");
@@ -658,6 +657,7 @@ LinkedList *tokenizeSourceCode(char *sourceCode) {
     }
 
     free(lex); // Free the lexer
-    // printLinkedList(tokenList);
+    printf("\n");
+    printLinkedList(tokenList);
     return tokenList;
 }
