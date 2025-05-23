@@ -18,6 +18,7 @@
 #include "lexer.h"
 #include "token.h"
 #include "stack.h"
+#include "LinkedList.h"
 #include "test_mixed_combarithmetic.h"
 
 int GlobalExpectCount;
@@ -161,25 +162,25 @@ static void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE l
   }
 #endif
   UnityBegin("test_mixed_combarithmetic.c");
-  run_test(test_mixed_expr1, "test_mixed_expr1", 18);
-  run_test(test_mixed_subexpr1, "test_mixed_subexpr1", 25);
-  run_test(test_mixed_subexpr2, "test_mixed_subexpr2", 32);
-  run_test(test_mixed_subexpr3, "test_mixed_subexpr3", 39);
-  run_test(test_mixed_subexpr4, "test_mixed_subexpr4", 46);
-  run_test(test_mixed_expr2, "test_mixed_expr2", 53);
-  run_test(test_mixed_expr3, "test_mixed_expr3", 60);
-  run_test(test_mixed_expr4, "test_mixed_expr4", 67);
-  run_test(test_mixed_expr5, "test_mixed_expr5", 74);
-  run_test(test_mixed_expr6, "test_mixed_expr6", 81);
-  run_test(test_mixed_expr7, "test_mixed_expr7", 88);
-  run_test(test_mixed_expr8, "test_mixed_expr8", 95);
-  run_test(test_mixed_expr9, "test_mixed_expr9", 102);
-  run_test(test_mixed_expr10, "test_mixed_expr10", 109);
-  run_test(test_mixed_expr11, "test_mixed_expr11", 116);
-  run_test(test_mixed_expr12, "test_mixed_expr12", 123);
-  run_test(test_mixed_expr13, "test_mixed_expr13", 130);
-  run_test(test_mixed_expr14, "test_mixed_expr14", 137);
-  run_test(test_mixed_expr15, "test_mixed_expr15", 144);
+  run_test(test_mixed_expr1, "test_mixed_expr1", 19);
+  run_test(test_mixed_subexpr1, "test_mixed_subexpr1", 26);
+  run_test(test_mixed_subexpr2, "test_mixed_subexpr2", 33);
+  run_test(test_mixed_subexpr3, "test_mixed_subexpr3", 40);
+  run_test(test_mixed_subexpr4, "test_mixed_subexpr4", 47);
+  run_test(test_mixed_expr2, "test_mixed_expr2", 54);
+  run_test(test_mixed_expr3, "test_mixed_expr3", 61);
+  run_test(test_mixed_expr4, "test_mixed_expr4", 68);
+  run_test(test_mixed_expr5, "test_mixed_expr5", 75);
+  run_test(test_mixed_expr6, "test_mixed_expr6", 82);
+  run_test(test_mixed_expr7, "test_mixed_expr7", 89);
+  run_test(test_mixed_expr8, "test_mixed_expr8", 96);
+  run_test(test_mixed_expr9, "test_mixed_expr9", 103);
+  run_test(test_mixed_expr10, "test_mixed_expr10", 110);
+  run_test(test_mixed_expr11, "test_mixed_expr11", 117);
+  run_test(test_mixed_expr12, "test_mixed_expr12", 124);
+  run_test(test_mixed_expr13, "test_mixed_expr13", 131);
+  run_test(test_mixed_expr14, "test_mixed_expr14", 138);
+  run_test(test_mixed_expr15, "test_mixed_expr15", 145);
 
   return UNITY_END();
 }

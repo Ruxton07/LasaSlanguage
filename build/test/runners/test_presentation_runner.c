@@ -18,7 +18,7 @@
 #include "lexer.h"
 #include "token.h"
 #include "stack.h"
-#include "test_division.h"
+#include "test_addition.h"
 
 int GlobalExpectCount;
 int GlobalVerifyOrder;
@@ -27,13 +27,13 @@ char* GlobalOrderError;
 /*=======External Functions This Runner Calls=====*/
 extern void setUp(void);
 extern void tearDown(void);
-extern void test_division_int_int(void);
-extern void test_division_double_int(void);
-extern void test_division_double_float(void);
-extern void test_division_float_double(void);
-extern void test_division_int_double(void);
-extern void test_division_int_float(void);
-extern void test_division_float_int(void);
+extern void test_addition_int_int(void);
+extern void test_addition_double_int(void);
+extern void test_addition_double_float(void);
+extern void test_addition_float_double(void);
+extern void test_addition_int_double(void);
+extern void test_addition_int_float(void);
+extern void test_addition_float_int(void);
 
 
 /*=======Mock Management=====*/
@@ -103,35 +103,35 @@ static void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE l
   {
     if (parse_status < 0)
     {
-      UnityPrint("test_division.");
+      UnityPrint("test_presentation.");
       UNITY_PRINT_EOL();
-      UnityPrint("  test_division_int_int");
+      UnityPrint("  test_addition_int_int");
       UNITY_PRINT_EOL();
-      UnityPrint("  test_division_double_int");
+      UnityPrint("  test_addition_double_int");
       UNITY_PRINT_EOL();
-      UnityPrint("  test_division_double_float");
+      UnityPrint("  test_addition_double_float");
       UNITY_PRINT_EOL();
-      UnityPrint("  test_division_float_double");
+      UnityPrint("  test_addition_float_double");
       UNITY_PRINT_EOL();
-      UnityPrint("  test_division_int_double");
+      UnityPrint("  test_addition_int_double");
       UNITY_PRINT_EOL();
-      UnityPrint("  test_division_int_float");
+      UnityPrint("  test_addition_int_float");
       UNITY_PRINT_EOL();
-      UnityPrint("  test_division_float_int");
+      UnityPrint("  test_addition_float_int");
       UNITY_PRINT_EOL();
       return 0;
     }
     return parse_status;
   }
 #endif
-  UnityBegin("test_division.c");
-  run_test(test_division_int_int, "test_division_int_int", 18);
-  run_test(test_division_double_int, "test_division_double_int", 25);
-  run_test(test_division_double_float, "test_division_double_float", 32);
-  run_test(test_division_float_double, "test_division_float_double", 39);
-  run_test(test_division_int_double, "test_division_int_double", 46);
-  run_test(test_division_int_float, "test_division_int_float", 53);
-  run_test(test_division_float_int, "test_division_float_int", 60);
+  UnityBegin("test_presentation.c");
+  run_test(test_addition_int_int, "test_addition_int_int", 18);
+  run_test(test_addition_double_int, "test_addition_double_int", 25);
+  run_test(test_addition_double_float, "test_addition_double_float", 32);
+  run_test(test_addition_float_double, "test_addition_float_double", 39);
+  run_test(test_addition_int_double, "test_addition_int_double", 46);
+  run_test(test_addition_int_float, "test_addition_int_float", 53);
+  run_test(test_addition_float_int, "test_addition_float_int", 60);
 
   return UNITY_END();
 }

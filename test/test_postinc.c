@@ -2,6 +2,7 @@
 #include "lexer.h"
 #include "token.h"
 #include "stack.h"
+#include "LinkedList.h"
 
 #include "unity.h"
 #include "test_postinc.h"
